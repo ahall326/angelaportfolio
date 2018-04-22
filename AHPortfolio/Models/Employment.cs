@@ -8,11 +8,20 @@ using AHPortfolio.Models;
 
 namespace AHPortfolio.Models
 {
+    public class TimeDuration
+    {
+        public int years { get; set; }
+        public int months { get; set; }
+        public int days { get; set; }
+        public int hours { get; set; }
+
+    }
+
     [Table("User")]
     public class User
     {
         [Index]
-        public int userId { get; set; }
+        public Guid userId { get; set; }
         public string userFirstName { get; set; }
         public string userLastName { get; set; }
         public string userMiddleName { get; set; }
@@ -72,15 +81,6 @@ namespace AHPortfolio.Models
         public IList<Responsibilities> employmentResponsibilities { get; set; }
     }
 
-    public class TimeDuration
-    {
-        public int years { get; set; }
-        public int months { get; set; }
-        public int days { get; set; }
-        public int hours { get; set; }
-
-    }
-
     [Table("Address")]
     public class Address
     {
@@ -98,7 +98,7 @@ namespace AHPortfolio.Models
     public class Company
     {
         [Index]
-        public int companyId { get; set; }
+        public Guid companyId { get; set; }
         public string companyName { get; set; }
         public Address companyAddress { get; set; }
         public string companyWebsite { get; set; }
@@ -117,16 +117,6 @@ namespace AHPortfolio.Models
         public SkillLevel skillLevel { get; set; }
         public string skillDescription { get; set; }
 
-    }
-
-    public enum SkillLevel
-    {
-        NA,
-        Fundamental,
-        Novice,
-        Intermediate,
-        Advanced,
-        Expert
     }
 
     [Table("Responsibilities")]
@@ -150,12 +140,28 @@ namespace AHPortfolio.Models
 
     }
 
+    [Table("Schools")]
     public class Schools : Company
     {
+        [Index]
         public int schoolId { get; set; }
         public IList<SchoolTypes> schoolType { get; set; }
 
     }
+
+    [Table("AuditMessages")]
+    public class AuditMessages
+    {
+        [Index]
+        public Guid auditmessageId { get; set; }
+        public string auditmessageBody { get; set; }
+        public DateTime auditmessageDateTimeLoaded { get; set; }
+        public string auditmessageType { get; set; }
+        public string auditmessageMethod { get; set; }
+        public string auditmessageLocation { get; set; }
+    }
+
+
     public enum SchoolTypes
     {
         Private,
@@ -177,6 +183,16 @@ namespace AHPortfolio.Models
         Graduates,
         Professional
     }
+    public enum SkillLevel
+    {
+        NA,
+        Fundamental,
+        Novice,
+        Intermediate,
+        Advanced,
+        Expert
+    }
+
 }
 public partial class EmploymentDBEntities : DbContext
 {
@@ -185,5 +201,8 @@ public partial class EmploymentDBEntities : DbContext
     public virtual DbSet<Company> Companies { get; set; }
     public virtual DbSet<Skills> Skill { get; set; }
     public virtual DbSet<Responsibilities> Responsibility { get; set; }
+    public virtual DbSet<Schools> Schools { get; set; }
+    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<AuditMessages> AuditMessages { get; set; }
 }
 
